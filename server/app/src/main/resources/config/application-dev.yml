@@ -1,0 +1,74 @@
+server:
+  port: 8080
+
+rest:
+  address: http://localhost:8080/
+  seed: HUK312FJJsdf!@#*
+
+cors_domain: http://localhost:8100,http://localhost:8101
+
+spring:
+  profiles : dev
+  datasource:
+    name: maledisease
+    type: com.alibaba.druid.pool.DruidDataSource
+    url: jdbc:mysql://192.168.1.254:3306/nrb?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: root
+    password: 2wsx#EDC4rfv
+    driver-class-name: com.mysql.jdbc.Driver
+    maxIdle: 20
+    minIdle: 5
+    maxActive: 15
+    initialSize: 5
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 3000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT '1'
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    maxPoolPreparedStatementPerConnectionSize: 20
+    filters: stat
+  redis:
+      host: 192.168.1.254
+      password:
+      port: 6379
+      pool:
+        max-idle: 8
+        min-idle: 0
+        max-active: 8
+        max-wait: -1
+  jmx:
+    enabled: false
+
+mybatis:
+  mapperLocations: classpath*:mapper/*.xml
+  typeAliasesPackage: com.nrb.maledisease.**.entity
+
+logging:
+  path: /Users/lzy/logs
+  config: classpath:config/logback.xml
+  level:
+    root: info
+    ACCESS: info
+
+redis:
+  topic: message_persistence_dev
+
+fdfs:
+  soTimeout: 1500
+  connectTimeout: 600
+  thumbImage:             #缩略图生成参数
+    width: 150
+    height: 150
+  trackerList:            #TrackerList参数,支持多个
+    - 192.168.1.254:22122
+   
+weixin:
+  appId: wxb5783315640d74f8
+  appSecret: 5ad0d49a2f12a635f469d552458ce842
+  token: K6W8-LKy0JfnwFu6mSiy97jhWG9Qa9BWg3Y24LnOQmAlOE3u2aY1BeAy3fnGXYawwiXOVKt2c2Dyx8qPwEECFRuiqcUI2jlZtdyOQoD64k5t8uoKnh1NMq6bXyb_oPvZHBIgAFADXE
+
+cookie:
+    domain:
