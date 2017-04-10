@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:util="http://www.springframework.org/schema/util"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd
+                           http://www.springframework.org/schema/util
+                           http://www.springframework.org/schema/util/spring-util.xsd"
+       default-lazy-init="true">
+
+    <description>Shiro安全配置</description>
+
+    <!-- 权限管理器 -->
+    <bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
+        <!-- 缓存管理器 -->
+        <property name="cacheManager" ref="erpIntegrationCacheManager"/>
+        <property name="realm" ref="erpIntegrationRealm" />
+        <!-- session 管理器 -->
+        <property name="sessionMode" value="native"/>
+        <property name="sessionManager" ref="sessionManager"/>
+    </bean>
+
+    <bean id="erpIntegrationRealm" class="cn.gusmedsci.erp.auth.integration.realm.ErpIntegrationRealm">
+        <property name="credentialsMatcher" ref="credentialsMatcher"/>
+        <!--是否支持认证缓存-->
+        <property name="authenticationCachingEnabled" value="true"/>
+        <!--是否支持授权缓存-->
+        <property name="authorizationCachingEnabled" value="true"/>
+        <property name="authenticationCacheName" value="erp.mgr.auth.authc."/>
+        <property name="authorizationCacheName" value="erp.mgr.auth.authz."/>
+    </bean>
+
+    <bean id="credentialsMatcher" class="cn.gusmedsci.erp.auth.integration.realm.AuthCredentialsMatcher"/>
+
+    <!-- 会话管理器 -->
+    <bean id="sessionManager" class="org.apache.shiro.web.session.mgt.DefaultWebSessionManager">
+        <!--<property name="sessionDAO" ref="redisShiroSessionDao"/>-->
+        <property name="sessionDAO" ref="sessionDAO"/>
+        <!-- sessionIdCookie的实现,用于重写覆盖容器默认的JSESSIONID -->
+        <property name="sessionIdCookie" ref="simpleCookie"/>
+        <property name="sessionIdCookie.domain" value="gusmedsci.cn"/>
+        <property name="sessionIdCookie.path" value="/"/>
+        <property name="sessionIdCookie.name" value="ERP_INTEGRATION_JSESSIONID"/>
+        <property name="globalSessionTimeout" value="3600000"/>
+        <property name="sessionValidationSchedulerEnabled" value="false"/>
+    </bean>
+
+    <bean id="simpleCookie" class="cn.gusmedsci.erp.auth.integration.web.XPSimpleCookie"/>
+
+    <bean id="erpIntegrationCacheManager" class="cn.gusmedsci.erp.auth.integration.cache.RedisCacheManager">
+        <property name="redisTemplate" ref="redisTemplate"/>
+        <property name="timeout" value="1800"/>
+    </bean>
+
+    <bean id="sessionDAO" class="cn.gusmedsci.erp.auth.integration.session.CustomShiroSessionDAO">
+        <property name="shiroSessionRepository" ref="shiroSessionRepository" />
+    </bean>
+
+    <bean id="shiroSessionRepository" class="cn.gusmedsci.erp.auth.integration.session.RedisShiroSessionRepository">
+        <property name="redisTemplate" ref="redisTemplate" />
+    </bean>
+
+    <!-- Shiro 的 Web 过滤器 -->
+    <bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
+        <property name="securityManager" ref="securityManager"/>
+        <property name="loginUrl" value="${shiroFilter.loginUrl}"/>
+        <property name="successUrl" value="/"/>
+        <property name="filters">
+            <util:map>
+                <entry key="authFilter" value-ref="authFilter"/>
+                <entry key="authUserLogoutFilter" value-ref="authUserLogoutFilter"/>
+            </util:map>
+        </property>
+        <property name="filterChainDefinitions">
+            <value>
+                /resources/**=anon
+                /resource/**=anon
+                <!--/**/*.js = anon-->
+                <!--/**/*.css = anon-->
+                <!--/**/*.img = anon-->
+                <!--/**/*.png = anon-->
+                <!--/**/*.jpg = anon-->
+                /login=anon
+                /favicon.ico=anon
+                /logout=authUserLogoutFilter
+                /loginCheck=authFilter
+                /**=user
+            </value>
+        </property>
+    </bean>
+
+    <bean id="authFilter" class="cn.gusmedsci.erp.auth.integration.web.filter.AuthFilter">
+        <property name="cookieName" value="ERP_INTEGRATION_COOKIE"/>
+    </bean>
+
+    <bean id="authUserLogoutFilter" class="cn.gusmedsci.erp.auth.integration.web.filter.AuthUserLogoutFilter">
+        <property name="cookieDomain" value="gusmedsci.cn"/>
+        <property name="cookiePath" value="/"/>
+        <property name="redirectUrl" value="${shiroFilter.loginUrl}"/>
+        <property name="cookieName" value="ERP_INTEGRATION_JSESSIONID"/>
+    </bean>
+
+    <!-- 保证实现了shiro内部Lifecycle函数的bean的执行  （生命周期）-->
+    <bean id="lifecycleBeanPostProcessor" class="org.apache.shiro.spring.LifecycleBeanPostProcessor"/>
+
+    <!-- 支持 Shiro对Controller的方法级AOP安全控制 begin-->
+    <bean class="org.springframework.aop.framework.autoproxy.DefaultAdvisorAutoProxyCreator" depends-on="lifecycleBeanPostProcessor">
+        <property name="proxyTargetClass" value="true"/>
+    </bean>
+
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+
+    <import resource="integration-redis.xml"/>
+
+</beans>

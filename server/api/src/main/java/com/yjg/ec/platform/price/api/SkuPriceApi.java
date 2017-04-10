@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.yjg.ec.platform.annotation.RestApi;
 import com.yjg.ec.platform.common.Result;
 import com.yjg.ec.platform.price.param.dto.SkuPriceSelectParamDto;
 import com.yjg.ec.platform.price.result.dto.SkuPriceReslutDto;
@@ -14,6 +15,7 @@ import com.yjg.ec.platform.price.result.dto.SkuPriceReslutDto;
  * @author aoyasong
  *
  */
+@RestApi
 public interface SkuPriceApi {
 
 	@RequestMapping("/inner/couponUserApi/getUserCoupons")

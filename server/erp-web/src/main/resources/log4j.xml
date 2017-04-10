@@ -1,0 +1,90 @@
+<!DOCTYPE log4j:configuration PUBLIC "-//APACHE//DTD LOG4J 1.2//EN" "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/'>
+
+    <appender name="STDOUT" class="org.apache.log4j.ConsoleAppender">
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[ERP_AUTH_MANAGER][%C]%d{yyyy-MM-dd HH:mm:ss} %-5p%m%n"/>
+        </layout>
+    </appender>
+    <appender name="DEBUG" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${mgr.erp.log.path}/erp_debug.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[ERP_AUTH_MANAGER]%d{yyyy-MM-dd HH:mm:ss} %-5p%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="DEBUG"/>
+            <param name="LevelMax" value="DEBUG"/>
+        </filter>
+    </appender>
+
+    <appender name="INFO" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${mgr.erp.log.path}/erp_info.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[ERP_AUTH_MANAGER][%C]%d{yyyy-MM-dd HH:mm:ss} %-5p%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="INFO"/>
+            <param name="LevelMax" value="WARN"/>
+        </filter>
+    </appender>
+
+    <appender name="WEBSERVICE" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${mgr.erp.log.path}/erp_webservice.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[ERP_AUTH_MANAGER]%d{yyyy-MM-dd HH:mm:ss} %-5p%m%n"/>
+        </layout>
+    </appender>
+    <appender name="MANAGER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${mgr.erp.log.path}/erp_manager.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[ERP_AUTHORITY_SERVICE]%d{yyyy-MM-dd HH:mm:ss} %-5p%m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="CONTROLLER" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${mgr.erp.log.path}/erp_controller.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[ERP_AUTHORITY_SERVICE]%d{yyyy-MM-dd HH:mm:ss} %-5p%m%n"/>
+        </layout>
+    </appender>
+
+    <appender name="EXCEPTION" class="org.apache.log4j.DailyRollingFileAppender">
+        <param name="File" value="${mgr.erp.log.path}/erp_exception.log"/>
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="[ERP_AUTHORITY_PORTAL]%d{yyyy-MM-dd HH:mm:ss} %-5p%l%m%n"/>
+        </layout>
+        <filter class="org.apache.log4j.varia.LevelRangeFilter">
+            <param name="LevelMin" value="ERROR"/>
+            <param name="LevelMax" value="FATAL"/>
+        </filter>
+    </appender>
+
+    <category name="cn.gusmedsci.erp.auth.manager" additivity="true">
+        <appender-ref ref="MANAGER"/>
+        <appender-ref ref="EXCEPTION"/>
+        <appender-ref ref="INFO"/>
+    </category>
+
+    <category name="cn.gusmedsci.erp.auth.controller" additivity="true">
+        <appender-ref ref="CONTROLLER"/>
+        <appender-ref ref="EXCEPTION"/>
+        <appender-ref ref="INFO"/>
+    </category>
+
+    <category name="cn.gusmedsci.erp.auth.integration" additivity="true">
+        <appender-ref ref="EXCEPTION"/>
+        <appender-ref ref="INFO"/>
+        <appender-ref ref="DEBUG"/>
+    </category>
+
+    <category name="org.apache.shiro" additivity="true">
+        <appender-ref ref="EXCEPTION"/>
+        <appender-ref ref="DEBUG"/>
+        <appender-ref ref="INFO"/>
+    </category>
+
+    <root>
+        <priority value="INFO"/>
+        <appender-ref ref="STDOUT"/>
+    </root>
+</log4j:configuration>

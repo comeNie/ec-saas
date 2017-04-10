@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+
+
+<mapper namespace="com.nrb.maledisease.coupon.dao.CouponUserDao">
+
+	<resultMap id="couponUserResultMap"
+		type="com.nrb.maledisease.coupon.domain.CouponUserDomain">
+		<result column="coupon_user_id" property="id" />
+		<result column="patient_id" property="patientId" />
+		<result column="coupon_id_in_user" property="couponId" />
+		<result column="patient_name" property="patientName" />
+		<result column="patient_login_name" property="patientLoginName" />
+		<result column="coupon_user_status" property="status" />
+		<result column="usage_state" property="usageState" />
+		<result column="valid_date_begin" property="validDateBegin" />
+		<result column="valid_date_end" property="validDateEnd" />
+		<result column="create_by" property="createBy" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_by" property="lastUpdateBy" />
+		<result column="last_update" property="lastUpdate" />
+		<association property="couponDomain" column="coupon_id_in_user"
+			javaType="com.nrb.maledisease.coupon.domain.CouponDomain">
+			<id property="id" column="coupon_id" />
+			<result property="couponType" column="coupon_type" />
+			<result property="price" column="price" />
+			<result property="restPrice" column="rest_price" />
+			<result property="status" column="coupon_status" />
+			<result property="valid_period_dimension" column="validPeriodDimension" />
+			<result property="valid_period_value" column="validPeriodValue" />
+
+		</association>
+		<collection property="restrictList" column="coupon_id_in_user"
+			ofType="com.nrb.maledisease.coupon.domain.CouponRestrictDomain">
+			<id property="id" column="coupon_restrict_id" />
+			<result property="couponId" column="coupon_id_in_restrict" />
+			<result property="restrictType" column="restrict_type" />
+			<result property="restrictId" column="restrict_id" />
+			<result property="restrictName" column="restrict_name" />
+			<result property="status" column="status" />
+		</collection>
+
+	</resultMap>
+
+	<select id="getCouponsByUserId"
+		parameterType="com.nrb.maledisease.coupon.param.dto.CouponUserSelectParamDto"
+		resultType="com.nrb.maledisease.coupon.domain.CouponUserDomain"
+		resultMap="couponUserResultMap">
+		SELECT cu.id AS coupon_user_id, cu.patient_id AS patient_id,
+		cu.coupon_id AS coupon_id_in_user, cu.patient_name AS patient_name,
+		cu.patient_login_name AS patient_login_name,
+		cu.status AS
+		coupon_user_status, cu.usage_state AS usage_state,
+		cu.valid_date_begin
+		AS valid_date_begin, cu.valid_date_end,
+		cu.create_by AS create_by,
+		cu.create_date AS create_date,
+		cu.last_update_by AS
+		last_update_by,
+		cu.last_update AS last_update,
+		c.id AS coupon_id,
+		c.type AS coupon_type,
+		c.price AS price, c.rest_price AS rest_price,
+		c.status AS
+		coupon_status, c.valid_period_dimension AS
+		valid_period_dimension,
+		c.valid_period_value AS valid_period_value,
+		cr.id AS
+		coupon_restrict_id, cr.coupon_id AS coupon_id_in_restrict,
+		cr.restrict_type AS restrict_type, cr.restrict_id AS restrict_id,
+		cr.restrict_name AS restrict_name, cr.status AS restrict_type
+		FROM
+		coupon_users cu INNER JOIN coupon c ON
+		cu.coupon_id = c.id
+		LEFT JOIN
+		coupon_restrict cr ON c.id = cr.coupon_id
+		AND cu.coupon_id =
+		cr.coupon_id
+		WHERE cu.STATUS = 1
+		<if test="patientId != null">
+			AND cu.patient_id = #{patientId}
+		</if>
+		<if test="usageState != null">
+			AND cu.usage_state = #{usageState}
+		</if>
+		<if test="offset != null and offset != 0">
+			AND id &lt; #{offset}
+		</if>
+		ORDER BY cu.id DESC
+		LIMIT #{pageSize}
+	</select>
+
+	<select id="getUserCouponById" parameterType="long"
+		resultType="com.nrb.maledisease.coupon.domain.CouponUserDomain"
+		resultMap="couponUserResultMap">
+		SELECT cu.id AS coupon_user_id, cu.patient_id AS patient_id,
+		cu.coupon_id AS coupon_id_in_user, cu.patient_name AS patient_name,
+		cu.patient_login_name AS patient_login_name,
+		cu.status AS
+		coupon_user_status, cu.usage_state AS usage_state,
+		cu.valid_date_begin
+		AS valid_date_begin, cu.valid_date_end,
+		cu.create_by AS create_by,
+		cu.create_date AS create_date,
+		cu.last_update_by AS
+		last_update_by,
+		cu.last_update AS last_update,
+		c.id AS coupon_id,
+		c.type AS coupon_type,
+		c.price AS price, c.rest_price AS rest_price,
+		c.status AS
+		coupon_status, c.valid_period_dimension AS
+		valid_period_dimension,
+		c.valid_period_value AS valid_period_value,
+		cr.id AS
+		coupon_restrict_id, cr.coupon_id AS coupon_id_in_restrict,
+		cr.restrict_type AS restrict_type, cr.restrict_id AS restrict_id,
+		cr.restrict_name AS restrict_name, cr.status AS restrict_type
+		FROM
+		coupon_users cu INNER JOIN coupon c ON cu.coupon_id = c.id
+		LEFT JOIN
+		coupon_restrict cr ON c.id = cr.coupon_id AND cu.coupon_id =
+		cr.coupon_id
+		WHERE cu.STATUS = 1
+		<if test="couponUserId != null">
+			AND cu.id = #{couponUserId}
+		</if>
+	</select>
+
+
+	<insert id="createUserCoupon"
+		parameterType="com.nrb.maledisease.coupon.param.dto.CouponUserInsertParamDto"
+		useGeneratedKeys="true" keyProperty="id">
+		INSERT INTO coupon_users(
+		patient_id,
+		coupon_id, patient_name, patient_login_name,
+		status,
+		usage_state,
+		valid_date_end, valid_date_begin, create_by, create_date,
+		last_update_by,
+		last_update)
+		VALUES (
+		#{patientId}, #{couponId},
+		#{patientName}, #{patientLoginName},
+		'1', '0',
+		#{validDateBegin},
+		#{validDateEnd}, 'system', 'system',
+		NOW(),
+		NOW())
+	</insert>
+
+	<update id="updateUsage"
+		parameterType="com.nrb.maledisease.coupon.param.dto.CouponUserUseParamDto">
+		UPDATE coupon_users SET USAGE_STATE = '1'
+		WHERE
+		id = #{id}
+	</update>
+
+	<select id="getUniqueCoupon"
+		parameterType="com.nrb.maledisease.coupon.param.dto.CouponUserUseParamDto"
+		resultType="com.nrb.maledisease.coupon.domain.CouponUserSingleTableDomain">
+		SELECT
+		cu.id AS id, cu.patient_id AS patientId, cu.coupon_id
+		AS couponId, cu.patient_name AS patientName,
+		cu.patient_login_name AS
+		patientLoginName,
+		cu.status AS status, cu.usage_state AS usageState,
+		cu.valid_date_begin AS validDateBegin,
+		cu.valid_date_end AS
+		validDateEnd, cu.create_by AS createBy, cu.create_date AS createDate,
+		cu.last_update_by AS lastUpdateBy,
+		cu.last_update AS lastUpdate
+		FROM
+		coupon_users cu
+		WHERE cu.id = #{id}
+	</select>
+
+	<select id="getAvailableUserCouponList"
+		parameterType="com.nrb.maledisease.coupon.param.dto.CouponUserSelectParamDto"
+		resultType="com.nrb.maledisease.coupon.domain.CouponUserDomain"
+		resultMap="couponUserResultMap">
+		SELECT cu.id AS coupon_user_id, cu.patient_id AS patient_id,
+		cu.coupon_id AS coupon_id_in_user, cu.patient_name AS patient_name,
+		cu.patient_login_name AS patient_login_name,
+		cu.status AS
+		coupon_user_status, cu.usage_state AS usage_state,
+		cu.valid_date_begin
+		AS valid_date_begin, cu.valid_date_end,
+		cu.create_by AS create_by,
+		cu.create_date AS create_date,
+		cu.last_update_by AS
+		last_update_by,
+		cu.last_update AS last_update,
+		c.id AS coupon_id,
+		c.type AS coupon_type,
+		c.price AS price, c.rest_price AS rest_price,
+		c.status AS
+		coupon_status, c.valid_period_dimension AS
+		valid_period_dimension,
+		c.valid_period_value AS valid_period_value,
+		cr.id AS
+		coupon_restrict_id, cr.coupon_id AS coupon_id_in_restrict,
+		cr.restrict_type AS restrict_type, cr.restrict_id AS restrict_id,
+		cr.restrict_name AS restrict_name, cr.status AS restrict_type
+		FROM
+		coupon_users cu INNER JOIN coupon c ON cu.coupon_id = c.id
+		LEFT JOIN
+		coupon_restrict cr ON c.id = cr.coupon_id AND cu.coupon_id =
+		cr.coupon_id
+		WHERE cu.STATUS = 1
+		<if test="offset != null and offset != 0">
+			AND cu.id &lt; #{offset}
+		</if>
+		AND cu.id
+		IN (
+		<foreach collection="couponUserIdList" item="item" index="index"
+			separator=",">
+			#{item}
+		</foreach>
+		)
+		ORDER BY cu.id DESC
+		LIMIT #{pageSize}
+	</select>
+
+	<update id="updateUsageStatus" parameterType="java.util.List">
+		<foreach collection="list" index="index" item="item" open=""
+			close="" separator=";">
+			UPDATE coupon_users
+			SET USAGE_STATE =
+			#{item.usageState}
+			WHERE id = #{item.id}
+		</foreach>
+	</update>
+
+</mapper>
