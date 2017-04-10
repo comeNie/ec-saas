@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.gusmedsci.erp.auth.dao.ErpDeptDao">
+
+    <select id="queryDept" resultType="cn.gusmedsci.erp.auth.dto.ErpDept">
+		select d.id,
+			   d.dept_code as code,
+			   d.dept_name,
+			   d.create_id,
+			   d.create_time,
+			   d.description,
+			   d.modify_time,
+			   d.modify_id,
+			   d.status
+		from erp_dept d 
+		where d.id=#{id}
+	</select>
+	
+	<select id="queryDeptList" resultType="cn.gusmedsci.erp.auth.dto.ErpDept">
+		select d.id,
+			   d.dept_code as code,
+			   d.dept_name,
+			   d.create_id,
+			   d.create_time,
+			   d.description,
+			   d.modify_time,
+			   d.modify_id,
+			   d.parent_id,
+			   d.status
+		from erp_dept d 
+		where d.status = 1
+	</select>
+	<select id="countDeptByCode" resultType="int" parameterType="cn.gusmedsci.erp.auth.dto.ErpDept" >
+		select 
+			count(d.id)
+		from 
+			erp_dept d 
+		where 
+			d.dept_code=#{code}
+			<if test="id!=null"> and d.id!=#{id} </if>
+	</select>
+	
+    <insert id="saveDept" parameterType="cn.gusmedsci.erp.auth.dto.ErpDept" >
+		insert into 
+			erp_dept(dept_name,dept_code,description,create_id,create_time,modify_time,modify_id,parent_id,status)
+		values(
+			#{dept_name},
+			#{code},
+			#{description},
+			#{create_id},
+			now(),
+			now(),
+			#{modify_id},
+			#{parent_id},
+			#{status}
+			)
+  	</insert>
+	
+	<update id="updateDept" parameterType="cn.gusmedsci.erp.auth.dto.ErpDept" >
+		update erp_dept 
+		set 
+			dept_code=#{code},
+			dept_name=#{dept_name},
+			description=#{description},
+			modify_id=#{modify_id},
+			modify_time=now(),
+			status=#{status} 
+		where id=#{id}
+	</update>
+	
+	<delete id="deleteDept" parameterType="int">  
+        delete from erp_dept where id = #{id}  
+    </delete>
+    
+    <update id="softDeleteDept" parameterType="cn.gusmedsci.erp.auth.dto.ErpDept" >
+		update erp_dept 
+		set 
+			modify_id=#{modify_id},
+			modify_time=now(),
+			status=0
+		where id=#{id}
+	</update>
+</mapper>

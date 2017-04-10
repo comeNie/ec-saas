@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.gusmedsci.erp.auth.dao.ErpUserDao">
+
+    <select id="queryErpUser" resultType="cn.gusmedsci.erp.auth.dto.ErpUser">
+		select 
+			u.id,u.login_name,u.system_id,u.create_time,u.isAlive,ud.dept_id,uj.job_id
+		from 
+			erp_user u left join erp_user_dept ud on u.id=ud.user_id left join erp_user_job uj on u.id=uj.user_id
+		where u.id=#{id} 
+	</select>
+
+    <insert id="saveErpUser" parameterType="cn.gusmedsci.erp.auth.dto.ErpUser" keyProperty="id" useGeneratedKeys="true">
+		insert into erp_user (login_name, system_id, isAlive)
+		values (#{login_name},#{system_id},#{isAlive})
+  	</insert>
+
+    <update id="updateErpUser" parameterType="cn.gusmedsci.erp.auth.dto.ErpUser">
+		update erp_user set login_name=#{login_name},system_id=#{system_id},isAlive=#{isAlive}
+		where id=#{id}
+	</update>
+
+    <select id="queryUserByLoginName" parameterType="java.lang.String" resultType="cn.gusmedsci.erp.auth.dto.ErpUser">
+		SELECT 
+			u.id,u.login_name,u.system_id,u.create_time,u.isAlive,ud.dept_id,uj.job_id 
+		FROM 
+			erp_user u left join erp_user_dept ud on u.id=ud.user_id left join erp_user_job uj on u.id=uj.user_id
+		WHERE u.login_name=#{login_name} AND u.isAlive = 1
+	</select>
+
+    <select id="queryErpUserList" resultType="cn.gusmedsci.erp.auth.dto.ErpUser">
+        select u.id,u.login_name,u.system_id,u.create_time,u.isAlive
+        from erp_user u
+        where 1=1
+        <if test="isAlive!=null">and u.isAlive=#{isAlive}</if>
+        <if test="id!=null">and u.id=#{id}</if>
+        <if test="login_name!=null">and u.login_name like '%${login_name}%'</if>
+    </select>
+    <select id="queryUserNames" resultType="java.lang.String">
+        select u.login_name
+        from
+        erp_user u left join erp_user_dept ud on u.id=ud.user_id left join erp_dept d on ud.dept_id=d.id left join erp_user_job uj on u.id=uj.user_id left join erp_job j on uj.job_id=j.id
+        where 1=1
+        <if test="deptCode!=null">and d.dept_code=#{deptCode}</if>
+        <if test="jobCode!=null">and j.job_code=#{jobCode}</if>
+    </select>
+</mapper>

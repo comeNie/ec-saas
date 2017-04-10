@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.gusmedsci.erp.auth.dao.ErpAuthorityDao">
+
+    <select id="queryErpAuthority" resultType="cn.gusmedsci.erp.auth.dto.ErpAuthority">
+		select a.id,a.code,a.description,a.create_id,a.create_time,a.modify_id,a.modify_time 
+		from erp_authority a 
+		where a.id=#{id}
+	</select>
+
+	<insert id="saveErpAuthority" parameterType="cn.gusmedsci.erp.auth.dto.ErpAuthority">
+		insert into erp_authority (code,description,create_id,create_time,modify_id)
+		values (#{code},#{description},#{create_id},#{create_time},#{modify_id})
+	</insert>
+
+	<update id="updateErpAuthority" parameterType="cn.gusmedsci.erp.auth.dto.ErpAuthority">
+		update erp_authority set code=#{code},description=#{description},modify_id=#{modify_id}
+		where id=#{id}
+	</update>
+
+	<!-- 删除一条记录 -->
+	<delete id="deleteAuthority" parameterType="int">
+		delete from erp_authority where id = #{id}
+	</delete>
+
+	<select id="queryErpAuthorityList" resultType="cn.gusmedsci.erp.auth.dto.ErpAuthority">
+		select a.id,a.code,a.description,a.create_id,a.create_time,a.modify_id,a.modify_time
+		from erp_authority a
+		where 1=1
+		<if test="code!=null"> and a.code like '%${code}%' </if>
+		<if test="description!=null"> and a.code like '%${description}%'</if>
+	</select>
+
+    <select id="getAuthCodes" parameterType="int" resultType="java.lang.String">
+		SELECT DISTINCT
+			a.`code`
+		FROM
+			erp_user_role ur,
+			erp_role_authority ra,
+			erp_authority a
+		WHERE
+			ur.user_id = #{id}
+		AND ur.role_id = ra.role_id
+		AND a.id = ra.authority_id;
+	</select>
+
+	<select id="queryErpAuthrityRelationList" resultType="cn.gusmedsci.erp.auth.dto.ErpAuthorityRelationDto">
+		SELECT
+			ea.id AS id,
+			ea.description AS name,
+			COALESCE(er2.authority_id, 0) AS pid
+		FROM
+			erp_resouce er1
+		LEFT JOIN erp_resouce er2 ON er1.pid = er2.id
+		LEFT JOIN erp_authority ea ON er1.authority_id = ea.id;
+	</select>
+</mapper>

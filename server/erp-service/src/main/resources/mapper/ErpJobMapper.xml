@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.gusmedsci.erp.auth.dao.ErpJobDao">
+
+    <select id="queryJob" resultType="cn.gusmedsci.erp.auth.dto.ErpJob">
+		select d.id,
+			   d.job_code as code,
+			   d.job_name,
+			   d.create_id,
+			   d.create_time,
+			   d.description,
+			   d.modify_time,
+			   d.modify_id,
+			   d.status
+		from erp_job d 
+		where d.id=#{id}
+	</select>
+	
+	<select id="queryJobList" resultType="cn.gusmedsci.erp.auth.dto.ErpJob">
+		select d.id,
+			   d.job_code as code,
+			   d.job_name,
+			   d.create_id,
+			   d.create_time,
+			   d.description,
+			   d.modify_time,
+			   d.modify_id,
+			   d.status
+		from erp_job d 
+		where d.status = 1
+	</select>
+	
+	<select id="countJobByCode" resultType="int" parameterType="cn.gusmedsci.erp.auth.dto.ErpJob" >
+		select 
+			count(d.id)
+		from 
+			erp_job d 
+		where 
+			d.job_code=#{code}
+			<if test="id!=null"> and d.id!=#{id} </if>
+	</select>
+	
+    <insert id="saveJob" parameterType="cn.gusmedsci.erp.auth.dto.ErpJob">
+		insert into 
+			erp_job(job_name,job_code,description,create_id,create_time,modify_time,modify_id,status)
+		values(
+			#{job_name},
+			#{code},
+			#{description},
+			#{create_id},
+			now(),
+			now(),
+			#{modify_id},
+			#{status}
+			)
+  	</insert>
+	
+	<update id="updateJob" parameterType="cn.gusmedsci.erp.auth.dto.ErpJob">
+		update erp_job 
+		set 
+			job_code=#{code},
+			job_name=#{job_name},
+			description=#{description},
+			modify_id=#{modify_id},
+			modify_time=now(),
+			status=#{status} 
+		where id=#{id}
+	</update>
+	
+	<delete id="deleteJob" parameterType="int">  
+        delete from erp_job where id = #{id}  
+    </delete> 
+    <update id="softDeleteJob" parameterType="cn.gusmedsci.erp.auth.dto.ErpJob" >
+		update erp_job 
+		set 
+			modify_id=#{modify_id},
+			modify_time=now(),
+			status=0
+		where id=#{id}
+	</update> 
+</mapper>

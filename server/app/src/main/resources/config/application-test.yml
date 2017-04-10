@@ -12,7 +12,7 @@ spring:
   datasource:
     name: maledisease
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:mysql://192.168.1.254:3306/nrb?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    url: jdbc:mysql://192.168.1.254:3306/saas?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
     username: root
     password: 2wsx#EDC4rfv
     driver-class-name: com.mysql.jdbc.Driver

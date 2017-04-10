@@ -3,8 +3,8 @@ package com.yjg.ec.platform.erp.service.auth.dao;
 import org.apache.ibatis.annotations.Param;
 
 import com.yjg.ec.platform.erp.auth.param.dto.ErpAuthorityParamDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpAuthorityRelationResultDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpAuthorityResultDto;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpAuthorityEntity;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpAuthorityRelationEntity;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public interface ErpAuthorityDao {
 	 * @param id
 	 * @return
 	 */
-	List<ErpAuthorityResultDto> queryErpAuthority(@Param(value = "id") Integer id);
+	List<ErpAuthorityEntity> queryErpAuthority(@Param(value = "id") Integer id);
 
 	/**
 	 * 插入一条权限信息
@@ -49,7 +49,7 @@ public interface ErpAuthorityDao {
 	 * @param erpAuthority
 	 * @return
 	 */
-	List<ErpAuthorityResultDto> queryErpAuthorityList(ErpAuthorityParamDto erpAuthorityParamDto);
+	List<ErpAuthorityEntity> queryErpAuthorityList(ErpAuthorityParamDto erpAuthorityParamDto);
 
 	/**
 	 * 根据用户id获取用户所有权限码集合
@@ -64,5 +64,5 @@ public interface ErpAuthorityDao {
 	 *
 	 * @return
 	 */
-	List<ErpAuthorityRelationResultDto> queryErpAuthrityRelationList();
+	List<ErpAuthorityRelationEntity> queryErpAuthrityRelationList();
 }

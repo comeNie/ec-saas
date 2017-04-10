@@ -1,9 +1,12 @@
 package com.yjg.ec.platform.erp.service.auth.service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import javax.annotation.Resource;
 
+import org.dozer.Mapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -14,11 +17,10 @@ import com.yjg.ec.platform.erp.auth.param.dto.ErpUserOnJobParamDto;
 import com.yjg.ec.platform.erp.auth.result.dto.ErpJobResultDto;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpJobDao;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpUserOnJobDao;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpJobEntity;
 
 @Service
 public class ErpJobService {
-
-	private static Logger logger = LoggerFactory.getLogger(ErpJobService.class);
 
 	@Resource
 	private ErpJobDao erpJobDao;
@@ -26,8 +28,13 @@ public class ErpJobService {
 	@Resource
 	private ErpUserOnJobDao erpUserOnJobDao;
 
+	@Resource
+	private Mapper mapper;
+
 	public ErpJobResultDto queryJob(Integer id) {
-		return erpJobDao.queryJob(id);
+		ErpJobEntity entity = erpJobDao.queryJob(id);
+		ErpJobResultDto dto = mapper.map(entity, ErpJobResultDto.class);
+		return dto;
 	}
 
 	public Integer saveJob(ErpJobParamDto erpJobParamDto) {
@@ -35,7 +42,11 @@ public class ErpJobService {
 	}
 
 	public List<ErpJobResultDto> queryJobList() {
-		return erpJobDao.queryJobList();
+		List<ErpJobEntity> entityList = erpJobDao.queryJobList();
+		List<ErpJobResultDto> dtoList = new ArrayList<>();
+		dtoList = entityList.stream().map(entity -> mapper.map(entity, ErpJobResultDto.class))
+				.collect(Collectors.toList());
+		return dtoList;
 	}
 
 	public Integer updateJob(ErpJobParamDto erpJobParamDto) {

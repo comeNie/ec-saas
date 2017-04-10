@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.gusmedsci.erp.auth.dao.ErpRoleAuthorityDao">
+
+    <insert id="saveErpRoleAuthority" parameterType="cn.gusmedsci.erp.auth.dto.ErpRoleAuthority">
+		insert into erp_role_authority(role_id,authority_id)
+		values (#{role_id},#{authority_id})
+  	</insert>
+
+    <delete id="deleteErpRoleAuthority" parameterType="int">
+        delete from erp_role_authority where role_id = #{id}
+    </delete>
+
+    <select id="queryErpRoleAuthorityList"  resultType="cn.gusmedsci.erp.auth.dto.ErpRoleAuthority">
+        SELECT ra.role_id,ra.authority_id,a.code,a.description
+        from erp_role_authority ra ,erp_authority  a
+        where ra.role_id=#{role_id} and ra.authority_id = a.id
+    </select>
+
+</mapper>

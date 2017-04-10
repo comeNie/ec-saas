@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+
+<mapper namespace="cn.gusmedsci.erp.auth.dao.ErpUserRoleDao">
+
+	<select id="queryErpUserRoleList"  resultType="cn.gusmedsci.erp.auth.dto.ErpUserRole">
+		select ur.role_id,ur.user_id,u.login_name
+		from erp_user_role ur ,erp_user u
+		where ur.user_id=#{user_id} and u.id= ur.user_id
+	</select>
+
+	<insert id="saveErpUserRole" parameterType="cn.gusmedsci.erp.auth.dto.ErpUserRole" >
+		insert into erp_user_role (user_id, role_id)
+		values (#{user_id}, #{role_id})
+	</insert>
+
+	<delete id="deleteErpUserRole" parameterType="int">
+		delete from erp_user_role where user_id=#{user_id}
+	</delete>
+
+</mapper>

@@ -3,7 +3,7 @@ package com.yjg.ec.platform.erp.service.auth.dao;
 import org.apache.ibatis.annotations.Param;
 
 import com.yjg.ec.platform.erp.auth.param.dto.ErpUserRoleParamDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpUserRoleResultDto;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpUserRoleEntity;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface ErpUserRoleDao {
 	 * @param user_id
 	 * @return
 	 */
-	List<ErpUserRoleResultDto> queryErpUserRoleList(@Param(value = "user_id") Integer user_id);
+	List<ErpUserRoleEntity> queryErpUserRoleList(@Param(value = "user_id") Integer user_id);
 
 	/**
 	 * 保存一条用户角色关联信息

@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.yjg.ec.platform.erp.auth.param.dto.ErpDeptParamDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpDeptResultDto;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpDeptEntity;
 
 /**
  * 
@@ -15,11 +15,11 @@ import com.yjg.ec.platform.erp.auth.result.dto.ErpDeptResultDto;
 @MyBatisRepository
 public interface ErpDeptDao {
 
-	ErpDeptResultDto queryDept(@Param(value = "id") Integer id);
+	ErpDeptEntity queryDept(@Param(value = "id") Integer id);
 
 	Integer saveDept(ErpDeptParamDto erpDeptParamDto);
 
-	List<ErpDeptResultDto> queryDeptList();
+	List<ErpDeptEntity> queryDeptList();
 
 	Integer updateDept(ErpDeptParamDto erpDeptParamDto);
 

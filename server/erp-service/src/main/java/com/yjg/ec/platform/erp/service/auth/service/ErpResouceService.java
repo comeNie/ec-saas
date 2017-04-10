@@ -1,23 +1,19 @@
 package com.yjg.ec.platform.erp.service.auth.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yjg.ec.platform.erp.auth.param.dto.ErpResouceParamDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpAuthorityResultDto;
 import com.yjg.ec.platform.erp.auth.result.dto.ErpResouceResultDto;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpAuthorityDao;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpResouceDao;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpAuthorityEntity;
 
 import javax.annotation.Resource;
 import java.util.List;
 
 @Service
 public class ErpResouceService {
-
-	private static Logger logger = LoggerFactory.getLogger(ErpResouceService.class);
 
 	@Resource
 	private ErpResouceDao erpResouceDao;
@@ -44,7 +40,7 @@ public class ErpResouceService {
 	@Transactional
 	public Integer saveErpResouce(ErpResouceParamDto erpResouceParamDto) {
 		System.out.println("-------" + erpResouceParamDto.getAuthority_id());
-		List<ErpAuthorityResultDto> list = erpAuthorityDao.queryErpAuthority(erpResouceParamDto.getAuthority_id());
+		List<ErpAuthorityEntity> list = erpAuthorityDao.queryErpAuthority(erpResouceParamDto.getAuthority_id());
 		if (list.size() == 0) {
 			return -1;
 		}
@@ -82,7 +78,6 @@ public class ErpResouceService {
 	 *            权限Id
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ErpResouceResultDto> queryErpResouceList(Integer authority_id) {
 		List<ErpResouceResultDto> resList = erpResouceDao.queryErpResouceList(authority_id);
 		return resList;

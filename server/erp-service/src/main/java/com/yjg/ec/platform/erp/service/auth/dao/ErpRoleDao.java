@@ -3,7 +3,7 @@ package com.yjg.ec.platform.erp.service.auth.dao;
 import org.apache.ibatis.annotations.Param;
 
 import com.yjg.ec.platform.erp.auth.param.dto.ErpRoleParamDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpRoleResultDto;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpRoleEntity;
 
 import java.util.List;
 
@@ -13,14 +13,14 @@ public interface ErpRoleDao {
 	/**
 	 * 根据角色主键获取角色
 	 */
-	List<ErpRoleResultDto> queryErpRole(@Param(value = "id") Integer id);
+	List<ErpRoleEntity> queryErpRole(@Param(value = "id") Integer id);
 
 	/**
 	 * 获取所有角色列表
 	 * 
 	 * @return
 	 */
-	List<ErpRoleResultDto> queryErpRoleList(ErpRoleParamDto erpRoleParamDto);
+	List<ErpRoleEntity> queryErpRoleList(ErpRoleParamDto erpRoleParamDto);
 
 	/**
 	 * 插入一条角色

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cn.gusmedsci.erp.auth.dao.ErpUserOnJobDao">
+   
+    <insert id="saveUserOnJob" parameterType="cn.gusmedsci.erp.auth.dto.ErpUserOnJob" >
+		insert into 
+			erp_user_job(user_id,job_id)
+		values(
+			#{user_id},
+			#{job_id}
+			)
+  	</insert>
+	
+	<update id="updateUserOnJob" parameterType="cn.gusmedsci.erp.auth.dto.ErpUserOnJob" >
+		update erp_user_job 
+		set 
+			job_id=#{job_id}
+		where user_id=#{user_id}
+	</update>
+	
+	<select id="countUserNumByJob" resultType="int" parameterType="int" >
+		select 
+			count(*)
+		from 
+			erp_user_job
+		where 
+			job_id=#{0}
+	</select>
+	
+	<delete id="deleteUserOnJob" parameterType="cn.gusmedsci.erp.auth.dto.ErpUserOnJob">  
+        delete from erp_user_job 
+        <where>  
+        	<choose>  
+            	<when test="user_id !=null ">  
+        			user_id = #{user_id}
+        		</when>
+        		<when test="job_id !=null ">  
+        			and job_id = #{job_id}
+        		</when>
+				<otherwise>
+					and 1!=1
+            	</otherwise>  
+        	</choose>
+        </where>
+    </delete>
+</mapper>

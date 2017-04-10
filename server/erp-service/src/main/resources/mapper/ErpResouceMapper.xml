@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="cn.gusmedsci.erp.auth.dao.ErpResouceDao">
+
+    <select id="queryErpResouce" resultType="cn.gusmedsci.erp.auth.dto.ErpResouce">
+		select a.id,a.name,a.path,a.description,a.depth,a.sort,a.pid,a.authority_id,a.create_id,a.create_time,a.modify_id,a.modify_time 
+		from erp_resouce a 
+		where a.id=#{id}
+	</select>
+
+	<insert id="saveErpResouce" parameterType="cn.gusmedsci.erp.auth.dto.ErpResouce">
+		insert into erp_resouce (name,path,description,depth,sort,pid,authority_id,create_id,create_time,modify_id)
+		values (#{name},#{path},#{description},#{depth},#{sort},#{pid},#{authority_id},#{create_id},#{create_time},#{modify_id})
+	</insert>
+
+	<update id="updateErpResouce" parameterType="cn.gusmedsci.erp.auth.dto.ErpResouce">
+		update erp_resouce set name=#{name},path=#{path},description=#{description},depth=#{depth},
+		sort=#{sort},pid=#{pid},authority_id=#{authority_id},modify_id=#{modify_id}
+		where id=#{id}
+	</update>
+
+	<!-- 删除一条记录 -->
+	<delete id="deleteErpResouce" parameterType="int">
+		delete from erp_resouce where id = #{id}
+	</delete>
+
+	<select id="queryErpResouceList" resultType="cn.gusmedsci.erp.auth.dto.ErpResouce">
+		select a.id,a.name,a.path,a.description,a.depth,a.sort,a.pid,a.authority_id,a.create_id,a.create_time,a.modify_id,a.modify_time
+		from erp_resouce a
+		where a.authority_id=#{authority_id}
+	</select>
+
+	<select id="getResouceByUserId" parameterType="int" resultType="cn.gusmedsci.erp.auth.dto.ErpResouce">
+		SELECT DISTINCT
+		r.id AS id,
+		r.`name` AS NAME,
+		r.path AS path,
+		r.description AS description,
+		r.depth AS depth,
+		r.sort AS sort,
+		r.pid AS pid,
+		r.authority_id AS authority_id
+		FROM
+		erp_user_role ur,
+		erp_role_authority ra,
+		erp_resouce r
+		WHERE
+		ur.user_id = #{id}
+		AND ur.role_id = ra.role_id
+		AND ra.authority_id = r.authority_id;
+	</select>
+
+	<select id="queryErpResouceListByPid" resultType="cn.gusmedsci.erp.auth.dto.ErpResouce">
+		select a.id,a.name,a.path,a.description,a.depth,a.sort,a.pid,a.authority_id,a.create_id,a.create_time,a.modify_id,a.modify_time
+		from erp_resouce a
+		where a.pid=#{pid}
+	</select>
+
+	<select id="queryErpResouceListByCondition" resultType="cn.gusmedsci.erp.auth.dto.ErpResouce">
+		select a.id,a.name,a.path,a.description,a.depth,a.sort,a.pid,a.authority_id,a.create_id,a.create_time,a.modify_id,a.modify_time
+		from erp_resouce a
+		where 1=1
+		<if test="name!=null"> and a.name like '%${name}%' </if>
+		<if test="path!=null"> and a.path like '%${path}%'</if>
+	</select>
+
+</mapper>

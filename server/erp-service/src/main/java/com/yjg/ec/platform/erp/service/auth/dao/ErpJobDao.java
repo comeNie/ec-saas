@@ -5,7 +5,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.yjg.ec.platform.erp.auth.param.dto.ErpJobParamDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpJobResultDto;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpJobEntity;
 
 /**
  * 
@@ -15,11 +15,11 @@ import com.yjg.ec.platform.erp.auth.result.dto.ErpJobResultDto;
 @MyBatisRepository
 public interface ErpJobDao {
 
-	ErpJobResultDto queryJob(@Param(value = "id") Integer id);
+	ErpJobEntity queryJob(@Param(value = "id") Integer id);
 
 	Integer saveJob(ErpJobParamDto erpJobParamDto);
 
-	List<ErpJobResultDto> queryJobList();
+	List<ErpJobEntity> queryJobList();
 
 	Integer updateJob(ErpJobParamDto erpJobParamDto);
 

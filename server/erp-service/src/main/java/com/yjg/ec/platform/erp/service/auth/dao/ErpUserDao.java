@@ -3,7 +3,7 @@ package com.yjg.ec.platform.erp.service.auth.dao;
 import org.apache.ibatis.annotations.Param;
 
 import com.yjg.ec.platform.erp.auth.param.dto.ErpUserParamDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpUserResultDto;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpUserEntity;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface ErpUserDao {
 	 * @param id
 	 * @return
 	 */
-	List<ErpUserResultDto> queryErpUser(@Param(value = "id") Integer id);
+	List<ErpUserEntity> queryErpUser(@Param(value = "id") Integer id);
 
 	/**
 	 * 保存一条用户信息
@@ -40,14 +40,14 @@ public interface ErpUserDao {
 	 * @param userName
 	 * @return
 	 */
-	ErpUserResultDto queryUserByLoginName(@Param(value = "login_name") String userName);
+	ErpUserEntity queryUserByLoginName(@Param(value = "login_name") String userName);
 
 	/**
 	 * 查询所有可用用户集合
 	 *
 	 * @return
 	 */
-	List<ErpUserResultDto> queryErpUserList(ErpUserParamDto erpUserParamDto);
+	List<ErpUserEntity> queryErpUserList(ErpUserParamDto erpUserParamDto);
 
 	/**
 	 * 根据部门编号和职位编号查询用户登录名
