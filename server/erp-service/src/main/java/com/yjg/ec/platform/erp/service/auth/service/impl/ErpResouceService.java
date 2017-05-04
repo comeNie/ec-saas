@@ -1,28 +1,36 @@
 package com.yjg.ec.platform.erp.service.auth.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dozer.Mapper;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yjg.ec.platform.erp.auth.param.dto.ErpResouceParamDto;
-import com.yjg.ec.platform.erp.auth.result.dto.ErpAuthorityResultDto;
 import com.yjg.ec.platform.erp.auth.result.dto.ErpResouceResultDto;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpAuthorityDao;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpResouceDao;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpAuthorityEntity;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpResouceEntity;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ErpResouceService {
 
-	private static Logger logger = LoggerFactory.getLogger(ErpResouceService.class);
+	// private static Logger logger =
+	// LoggerFactory.getLogger(ErpResouceService.class);
 
 	@Resource
 	private ErpResouceDao erpResouceDao;
+
 	@Resource
 	private ErpAuthorityDao erpAuthorityDao;
+
+	@Resource
+	private Mapper mapper;
 
 	/**
 	 * 根据主键id获取资源（菜单）信息
@@ -31,8 +39,13 @@ public class ErpResouceService {
 	 * @return
 	 */
 	public List<ErpResouceResultDto> queryErpResouce(Integer id) {
-		List<ErpResouceResultDto> resList = erpResouceDao.queryErpResouce(id);
-		return resList;
+		List<ErpResouceEntity> entityList = erpResouceDao.queryErpResouce(id);
+		List<ErpResouceResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpResouceResultDto dto = mapper.map(entity, ErpResouceResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	/**
@@ -44,8 +57,8 @@ public class ErpResouceService {
 	@Transactional
 	public Integer saveErpResouce(ErpResouceParamDto erpResouceParamDto) {
 		System.out.println("-------" + erpResouceParamDto.getAuthority_id());
-		List<ErpAuthorityResultDto> list = erpAuthorityDao.queryErpAuthority(erpResouceParamDto.getAuthority_id());
-		if (list.size() == 0) {
+		List<ErpAuthorityEntity> entityList = erpAuthorityDao.queryErpAuthority(erpResouceParamDto.getAuthority_id());
+		if (entityList.size() == 0) {
 			return -1;
 		}
 		int rows = erpResouceDao.saveErpResouce(erpResouceParamDto);
@@ -82,10 +95,13 @@ public class ErpResouceService {
 	 *            权限Id
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ErpResouceResultDto> queryErpResouceList(Integer authority_id) {
-		List<ErpResouceResultDto> resList = erpResouceDao.queryErpResouceList(authority_id);
-		return resList;
+		List<ErpResouceEntity> entityList = erpResouceDao.queryErpResouceList(authority_id);
+		List<ErpResouceResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+
+		});
+		return dtoList;
 	}
 
 	/**
@@ -95,7 +111,13 @@ public class ErpResouceService {
 	 * @return
 	 */
 	public List<ErpResouceResultDto> getResouceByUserId(Integer userId) {
-		return erpResouceDao.getResouceByUserId(userId);
+		List<ErpResouceEntity> entityList = erpResouceDao.getResouceByUserId(userId);
+		List<ErpResouceResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpResouceResultDto dto = mapper.map(entity, ErpResouceResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	/**
@@ -105,7 +127,13 @@ public class ErpResouceService {
 	 * @return
 	 */
 	public List<ErpResouceResultDto> queryErpResouceListByPid(Integer pid) {
-		return erpResouceDao.queryErpResouceListByPid(pid);
+		List<ErpResouceEntity> entityList = erpResouceDao.queryErpResouceListByPid(pid);
+		List<ErpResouceResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpResouceResultDto dto = mapper.map(entity, ErpResouceResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	/**
@@ -115,7 +143,13 @@ public class ErpResouceService {
 	 * @return
 	 */
 	public List<ErpResouceResultDto> queryErpResouceListByCondition(ErpResouceParamDto erpResouceParamDto) {
-		return erpResouceDao.queryErpResouceListByCondition(erpResouceParamDto);
+		List<ErpResouceEntity> entityList = erpResouceDao.queryErpResouceListByCondition(erpResouceParamDto);
+		List<ErpResouceResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpResouceResultDto dto = mapper.map(entity, ErpResouceResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 }

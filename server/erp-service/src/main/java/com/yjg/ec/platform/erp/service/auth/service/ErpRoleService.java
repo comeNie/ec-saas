@@ -1,7 +1,7 @@
 package com.yjg.ec.platform.erp.service.auth.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dozer.Mapper;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,14 +12,19 @@ import com.yjg.ec.platform.erp.auth.result.dto.ErpUserRoleResultDto;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpRoleDao;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpUserDao;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpUserRoleDao;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpRoleEntity;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpUserRoleEntity;
 
 import javax.annotation.Resource;
+
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ErpRoleService {
 
-	private static Logger logger = LoggerFactory.getLogger(ErpRoleService.class);
+	// private static Logger logger =
+	// LoggerFactory.getLogger(ErpRoleService.class);
 
 	@Resource
 	private ErpRoleDao erRoleDao;
@@ -30,22 +35,33 @@ public class ErpRoleService {
 	@Resource
 	private ErpUserDao erpUserDao;
 
+	@Resource
+	private Mapper mapper;
+
 	/**
 	 * 查询角色
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ErpRoleResultDto> queryErpRole(Integer id) {
-		List<ErpRoleResultDto> resList = erRoleDao.queryErpRole(id);
-		return resList;
+		List<ErpRoleEntity> entityList = erRoleDao.queryErpRole(id);
+		List<ErpRoleResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpRoleResultDto dto = mapper.map(entity, ErpRoleResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	/**
 	 * 查询角色列表
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ErpRoleResultDto> queryErpRoleList(ErpRoleParamDto erpRoleParamDto) {
-		List<ErpRoleResultDto> resList = erRoleDao.queryErpRoleList(erpRoleParamDto);
-		return resList;
+		List<ErpRoleEntity> entityList = erRoleDao.queryErpRoleList(erpRoleParamDto);
+		List<ErpRoleResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpRoleResultDto dto = mapper.map(entity, ErpRoleResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	/**
@@ -90,7 +106,13 @@ public class ErpRoleService {
 	 * @return
 	 */
 	public List<ErpUserRoleResultDto> queryErpUserRoleList(Integer user_id) {
-		return erpUserRoleDao.queryErpUserRoleList(user_id);
+		List<ErpUserRoleEntity> entityList = erpUserRoleDao.queryErpUserRoleList(user_id);
+		List<ErpUserRoleResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpUserRoleResultDto dto = mapper.map(entity, ErpUserRoleResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	/**
