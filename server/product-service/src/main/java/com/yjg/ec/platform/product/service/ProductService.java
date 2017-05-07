@@ -11,5 +11,4 @@ public class ProductService implements ProductApi {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(ProductService.class);
 
-
 }
