@@ -26,6 +26,7 @@
 		<module>sku-price</module>
 		<module>erp-service</module>
     <module>erp_integration</module>
+    <module>shopcart</module>
   </modules>
 
 	<properties>
