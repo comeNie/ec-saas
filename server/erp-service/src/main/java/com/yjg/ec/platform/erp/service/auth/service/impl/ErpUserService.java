@@ -1,7 +1,6 @@
 package com.yjg.ec.platform.erp.service.auth.service.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dozer.Mapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -10,15 +9,18 @@ import com.yjg.ec.platform.erp.auth.param.dto.ErpUserOnJobParamDto;
 import com.yjg.ec.platform.erp.auth.param.dto.ErpUserParamDto;
 import com.yjg.ec.platform.erp.auth.result.dto.ErpUserResultDto;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpUserDao;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpUserEntity;
 
 import javax.annotation.Resource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ErpUserService {
 
-	private static Logger logger = LoggerFactory.getLogger(ErpUserService.class);
+	// private static Logger logger =
+	// LoggerFactory.getLogger(ErpUserService.class);
 
 	@Resource
 	private ErpUserDao erpUserDao;
@@ -29,12 +31,20 @@ public class ErpUserService {
 	@Resource
 	private ErpJobService erpJobService;
 
+	@Resource
+	private Mapper mapper;
+
 	/**
 	 * 根据用户id获取用户信息
 	 */
 	public List<ErpUserResultDto> queryErpUser(Integer id) {
-		List<ErpUserResultDto> resList = erpUserDao.queryErpUser(id);
-		return resList;
+		List<ErpUserEntity> entityList = erpUserDao.queryErpUser(id);
+		List<ErpUserResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpUserResultDto dto = mapper.map(entity, ErpUserResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	/**
@@ -44,7 +54,8 @@ public class ErpUserService {
 	 * @return
 	 */
 	public ErpUserResultDto queryUserByLoginName(String userName) {
-		return erpUserDao.queryUserByLoginName(userName);
+		ErpUserEntity entity = erpUserDao.queryUserByLoginName(userName);
+		return mapper.map(entity, ErpUserResultDto.class);
 	}
 
 	/**
@@ -84,7 +95,13 @@ public class ErpUserService {
 	 * @return
 	 */
 	public List<ErpUserResultDto> queryErpUserList(ErpUserParamDto erpUserParamDto) {
-		return erpUserDao.queryErpUserList(erpUserParamDto);
+		List<ErpUserEntity> entityList = erpUserDao.queryErpUserList(erpUserParamDto);
+		List<ErpUserResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpUserResultDto dto = mapper.map(entity, ErpUserResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	private Integer saveUserOnDept(ErpUserParamDto erpUserParamDto) {

@@ -1,11 +1,12 @@
 package com.yjg.ec.platform.erp.service.auth.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.dozer.Mapper;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,12 +15,14 @@ import com.yjg.ec.platform.erp.auth.param.dto.ErpUserOnDeptParamDto;
 import com.yjg.ec.platform.erp.auth.result.dto.ErpDeptResultDto;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpDeptDao;
 import com.yjg.ec.platform.erp.service.auth.dao.ErpUserOnDeptDao;
+import com.yjg.ec.platform.erp.service.auth.entity.ErpDeptEntity;
 import com.yjg.ec.platform.erp.service.auth.service.ErpDeptService;
 
 @Service
 public class ErpDeptServiceImpl implements ErpDeptService {
 
-	private static Logger logger = LoggerFactory.getLogger(ErpDeptServiceImpl.class);
+	// private static Logger logger =
+	// LoggerFactory.getLogger(ErpDeptServiceImpl.class);
 
 	@Resource
 	private ErpDeptDao erpDeptDao;
@@ -27,8 +30,13 @@ public class ErpDeptServiceImpl implements ErpDeptService {
 	@Resource
 	private ErpUserOnDeptDao erpUserOnDeptDao;
 
+	@Resource
+	private Mapper mapper;
+
 	public ErpDeptResultDto queryDept(Integer id) {
-		return erpDeptDao.queryDept(id);
+		ErpDeptEntity entity = erpDeptDao.queryDept(id);
+		ErpDeptResultDto dto = mapper.map(entity, ErpDeptResultDto.class);
+		return dto;
 	}
 
 	public Integer saveDept(ErpDeptParamDto erpDeptParamDto) {
@@ -36,7 +44,13 @@ public class ErpDeptServiceImpl implements ErpDeptService {
 	}
 
 	public List<ErpDeptResultDto> queryDeptList() {
-		return erpDeptDao.queryDeptList();
+		List<ErpDeptEntity> entityList = erpDeptDao.queryDeptList();
+		List<ErpDeptResultDto> dtoList = new ArrayList<>();
+		entityList.forEach(entity -> {
+			ErpDeptResultDto dto = mapper.map(entity, ErpDeptResultDto.class);
+			dtoList.add(dto);
+		});
+		return dtoList;
 	}
 
 	public Integer updateDept(ErpDeptParamDto erpDeptParamDto) {
