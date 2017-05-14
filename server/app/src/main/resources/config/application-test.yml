@@ -72,3 +72,8 @@ weixin:
 
 cookie:
     domain:
+    
+saas:
+  auth:
+    prefix: com.saas.auth_
+    expire_time: 1800l

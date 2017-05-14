@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.yjg.ec.platform.shopcart.dao.ShoppingCartDao">
+
+	<resultMap id="shopcartResultMap"
+		type="com.yjg.ec.platform.shopcart.domain.ShopcartDomain">
+		<result column="id" property="id" />
+		<result column="user_id" property="userId" />
+		<result column="sku" property="sku" />
+		<result column="number" property="number" />
+		<result column="session_id" property="sessionId" />
+		<result column="create_by" property="createBy" />
+		<result column="create_date" property="createDate" />
+		<result column="last_update_by" property="lastUpdateBy" />
+		<result column="last_update" property="lastUpdate" />
+	</resultMap>
+
+	<sql id="columns">
+		id, user_id, sku, number, session_id,
+		create_by, create_date, last_update_by, last_update
+	</sql>
+
+</mapper>

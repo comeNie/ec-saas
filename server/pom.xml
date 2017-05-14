@@ -27,6 +27,9 @@
 		<module>erp-service</module>
     <module>erp_integration</module>
     <module>shopcart</module>
+    <module>auth</module>
+    <module>login</module>
+    <module>security</module>
   </modules>
 
 	<properties>
