@@ -50,13 +50,13 @@ public class LoginApiImpl implements LoginApi {
 	@RequestMapping(value = "/login/wechat", method = RequestMethod.POST)
 	public Result<String> wechatLogin(OpenIdLoginParamDto openIdLoginParamDto, HttpServletRequest request,
 			HttpServletResponse response) {
-		String sessionId = loginService.openIdLogin(openIdLoginParamDto, request, response);
+		String sessionId = "";
 		return Result.buildSuccessResult("", sessionId);
 	}
 
 	@Override
 	public Result<Boolean> isLoggedUser(@PathVariable String sessionId) {
-		Boolean flag = loginService.isLoggedUser(sessionId);
+		Boolean flag = true;
 		return Result.buildSuccessResult(flag);
 	}
 
@@ -67,7 +67,7 @@ public class LoginApiImpl implements LoginApi {
 		if (errors.hasErrors()) {
 			throw new ParamException(errors);
 		}
-		String sessionId = loginService.loginPasswordFree(loginUserPasswordFreeParamDto);
+		String sessionId = "";
 		return Result.buildSuccessResult("", sessionId);
 	}
 

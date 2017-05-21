@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import com.alibaba.fastjson.JSON;
+import com.yjg.ec.platform.auth.common.UserUtil;
 import com.yjg.ec.platform.common.constant.CommonConstants;
 import com.yjg.ec.platform.common.util.CookieUtil;
 import com.yjg.ec.platform.shopcart.param.dto.CartItemParamDto;
@@ -24,6 +25,7 @@ public class ShoppingCartApiImpl implements ShoppingCartApi {
 
 	public void addToShoppingCart(HttpServletRequest request, HttpServletResponse response,
 			CartItemParamDto cartItemParamDto) throws Exception {
+		UserUtil.getCurrentUserInfo();
 		Cookie cookie = cookieUtil.getCookieByName(request, CommonConstants.SHOPPING_CART_COOKIE_ID);
 		if (cookie == null) {
 			CartParamDto cartDto = addNewCartItem(cartItemParamDto);
