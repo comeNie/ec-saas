@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 @Component
 public interface CustomerUserDao {
 
-	public long addPatient(CustomerUserParamDto customerUserParamDto);
+	public long addCustomer(CustomerUserParamDto customerUserParamDto);
 
-	public LoginUser getPatientLogin(String patientName);
+	public LoginUser getCustomerLogin(String patientName);
 
-	public LoginUser getPatientLoginByWechatOpenId(String openId);
+	public LoginUser getCustomerLoginByWechatOpenId(String openId);
 }
