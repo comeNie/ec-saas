@@ -16,6 +16,7 @@ import com.yjg.ec.platform.login.dao.CustomerUserDao;
 import com.yjg.ec.platform.login.domain.CustomerInfo;
 import com.yjg.ec.platform.login.param.dto.LoginUserParamDto;
 import com.yjg.ec.platform.login.param.dto.OpenIdLoginParamDto;
+import com.yjg.ec.platform.login.result.dto.CustomerResultDto;
 import com.yjg.ec.platform.login.service.LoginService;
 import com.yjg.ec.platform.weixin.api.WeixinUserinfoApi;
 import com.yjg.ec.platform.weixin.param.dto.WeixinUserinfoDto;
@@ -31,8 +32,7 @@ import javax.servlet.http.HttpSession;
 @Service
 public class LoginServiceImpl implements LoginService {
 
-	private static final Logger LOGGER = LoggerFactory
-			.getLogger(LoginServiceImpl.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(LoginServiceImpl.class);
 
 	@Resource
 	private CustomerUserDao customerUserDao;
@@ -50,21 +50,18 @@ public class LoginServiceImpl implements LoginService {
 	private Mapper mapper;
 
 	@Override
-	public boolean logout(HttpServletRequest request,
-			HttpServletResponse response) {
+	public boolean logout(HttpServletRequest request, HttpServletResponse response) {
 		return false;
 	}
 
 	@Override
-	public String openIdLogin(OpenIdLoginParamDto openIdLoginParamDto,
-			HttpServletRequest request, HttpServletResponse response) {
+	public String openIdLogin(OpenIdLoginParamDto openIdLoginParamDto, HttpServletRequest request,
+			HttpServletResponse response) {
 		LOGGER.info("code==============" + openIdLoginParamDto.getCode());
 
 		LoginResultUser loginUser;
 		try {
-			loginUser = loadUserByOpenId(
-					openIdLoginParamDto.getOauthServerType(),
-					openIdLoginParamDto.getCode());
+			loginUser = loadUserByOpenId(openIdLoginParamDto.getOauthServerType(), openIdLoginParamDto.getCode());
 		} catch (Exception e) {
 			throw new RuntimeException("登陆失败！", e);
 		}
@@ -74,9 +71,9 @@ public class LoginServiceImpl implements LoginService {
 		}
 
 		try {
-			CustomerInfo customerInfo = customerDao
-					.getCustomerInfoByLoginName(loginUser.getUsername());
-			loginUser.setUserInfo(customerInfo);
+			CustomerInfo customerInfo = customerDao.getCustomerInfoByLoginName(loginUser.getUsername());
+			CustomerResultDto customerResultDto = mapper.map(customerInfo, CustomerResultDto.class);
+			loginUser.setUserInfo(customerResultDto);
 		} catch (Exception e) {
 			throw new RuntimeException("登陆失败！", e);
 		}
@@ -89,8 +86,7 @@ public class LoginServiceImpl implements LoginService {
 		// call wechat api get openid
 		WeixinUserinfoDto dto = weixinUserinfoApi.getUserInfo(code);
 
-		LoginResultUser loginResultUser = customerUserDao
-				.getCustomerLoginByWechatOpenId(dto.getOpenId());
+		LoginResultUser loginResultUser = customerUserDao.getCustomerLoginByWechatOpenId(dto.getOpenId());
 		if (loginResultUser == null) {
 			CustomerUserParamDto customerUserParamDto = new CustomerUserParamDto();
 			customerUserParamDto.setUsername(buildUserName());
@@ -99,8 +95,7 @@ public class LoginServiceImpl implements LoginService {
 			long row = customerUserDao.addCustomer(customerUserParamDto);
 			if (row > 0) {
 				if (customerDao.initCustomer(customerUserParamDto.getId()) > 0) {
-					loginResultUser = customerUserDao
-							.getCustomerLoginByWechatOpenId(dto.getOpenId());
+					loginResultUser = customerUserDao.getCustomerLoginByWechatOpenId(dto.getOpenId());
 				}
 			}
 		}
@@ -115,8 +110,7 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	@Override
-	public String login(LoginUserParamDto loginUserParamDto,
-			HttpServletRequest request, HttpServletResponse response) {
+	public String login(LoginUserParamDto loginUserParamDto, HttpServletRequest request, HttpServletResponse response) {
 		return null;
 	}
 

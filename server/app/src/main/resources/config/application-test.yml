@@ -74,6 +74,10 @@ cookie:
     domain:
     
 saas:
-  auth:
-    prefix: com.saas.auth_
-    expire_time: 1800l
+  cache:
+    prefix:
+      auth: com.saas.auth_
+      cart: com.saas.cart_
+    expire_time: 
+      auth: 1800l
+      cart: 18001

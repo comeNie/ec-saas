@@ -6,10 +6,10 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class AuthManagerConfig {
 
-	@Value("${saas.auth.expire_time}")
+	@Value("${saas.cache.expire_time.auth}")
 	private Long expireTime;
 
-	@Value("${saas.auth.prefix}")
+	@Value("${saas.cache.prefix.auth}")
 	private String prefix;
 
 	public Long getExpireTime() {
