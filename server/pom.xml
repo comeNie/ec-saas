@@ -30,6 +30,7 @@
     <module>auth</module>
     <module>login</module>
     <module>security</module>
+    <module>wechet-function</module>
   </modules>
 
 	<properties>

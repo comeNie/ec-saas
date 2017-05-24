@@ -1,4 +1,4 @@
-package com.yjg.ec.platform.auth.dto;
+package com.yjg.ec.platform.auth.result.dto;
 
 import java.io.Serializable;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 /**
  * Created by zhangyunfei on 01/01/2017.
  */
-public class LoginUser implements Serializable {
+public class LoginResultUser implements Serializable {
 
 	private static final long serialVersionUID = 5784446636400882693L;
 

@@ -3,7 +3,7 @@ package com.yjg.ec.platform.auth.common;
 import org.springframework.stereotype.Component;
 
 import com.yjg.ec.platform.auth.api.AuthManager;
-import com.yjg.ec.platform.auth.dto.LoginUser;
+import com.yjg.ec.platform.auth.result.dto.LoginResultUser;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
@@ -17,9 +17,9 @@ public class UserUtil {
 	@Resource
 	private AuthManager authManager;
 
-	private static ThreadLocal<LoginUser> loginUserThreadLocal = new ThreadLocal<>();
+	private static ThreadLocal<LoginResultUser> loginUserThreadLocal = new ThreadLocal<>();
 
-	public static LoginUser getCurrentLoginUser() {
+	public static LoginResultUser getCurrentLoginUser() {
 		return loginUserThreadLocal.get();
 	}
 
@@ -27,7 +27,7 @@ public class UserUtil {
 		return loginUserThreadLocal.get() == null ? null : loginUserThreadLocal.get().getUserInfo();
 	}
 
-	public static void setCurrentLoginUser(LoginUser loginUser) {
+	public static void setCurrentLoginUser(LoginResultUser loginUser) {
 		loginUserThreadLocal.set(loginUser);
 	}
 

@@ -11,13 +11,14 @@ import com.yjg.ec.platform.auth.annotation.AuthCode;
 import com.yjg.ec.platform.auth.annotation.NotAuthenRequired;
 import com.yjg.ec.platform.auth.api.AuthManager;
 import com.yjg.ec.platform.auth.common.UserUtil;
-import com.yjg.ec.platform.auth.dto.LoginUser;
+import com.yjg.ec.platform.auth.result.dto.LoginResultUser;
 import com.yjg.ec.platform.common.Result;
 import com.yjg.ec.platform.common.util.ResponseJsonUtil;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.lang.reflect.Method;
 
 /**
@@ -48,7 +49,7 @@ public class AuthInteceptor extends HandlerInterceptorAdapter {
 		} else {
 			return true;
 		}
-		LoginUser loginUser = null;
+		LoginResultUser loginUser = null;
 
 		try {
 			loginUser = authManager.getLoginUser(request.getSession().getId());

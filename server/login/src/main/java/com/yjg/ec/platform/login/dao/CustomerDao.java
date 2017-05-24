@@ -14,13 +14,13 @@ import java.util.List;
 @Component
 public interface CustomerDao {
 
-	public CustomerInfo getPatientInfoById(Long patientId);
+	public CustomerInfo getCustomerInfoById(Long customerId);
 
-	public List<CustomerInfo> getPatientInfoByIds(List<Long> patientIds);
+	public List<CustomerInfo> getCustomertInfoByIds(List<Long> customerIds);
 
-	public CustomerInfo getPatientInfoByLoginName(String loginName);
+	public CustomerInfo getCustomerInfoByLoginName(String loginName);
 
-	public int updatePatient(CustomerInfo patient);
+	public int updateCustomer(CustomerInfo customer);
 
-	public int initPatient(Long patientId);
+	public int initCustomer(Long customerId);
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import com.yjg.ec.platform.auth.annotation.NotAuthenRequired;
 import com.yjg.ec.platform.common.Result;
 import com.yjg.ec.platform.common.exception.ParamException;
-import com.yjg.ec.platform.login.param.dto.LoginUserParamDto;
 import com.yjg.ec.platform.login.param.dto.LoginUserPasswordFreeParamDto;
 import com.yjg.ec.platform.login.param.dto.OpenIdLoginParamDto;
 import com.yjg.ec.platform.login.service.LoginService;
@@ -27,30 +26,19 @@ public class LoginApiImpl implements LoginApi {
 	private LoginService loginService;
 
 	@NotAuthenRequired
-	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public Result<String> login(@Valid LoginUserParamDto loginUserParamDto, Errors errors, HttpServletRequest request,
-			HttpServletResponse response) {
-		if (errors.hasErrors()) {
-			throw new ParamException(errors);
-		}
-		// 100:登录错误次数大于等于限制次数
-		// 101:此设备不受信
-		String sessionId = loginService.login(loginUserParamDto, request, response);
-		return Result.buildSuccessResult("", sessionId);
-	}
-
-	@NotAuthenRequired
 	@RequestMapping(value = "/logout", method = RequestMethod.POST)
-	public Result<Boolean> logout(HttpServletRequest request, HttpServletResponse response) {
+	public Result<Boolean> logout(HttpServletRequest request,
+			HttpServletResponse response) {
 		boolean flag = loginService.logout(request, response);
 		return Result.buildSuccessResult(flag);
 	}
 
 	@NotAuthenRequired
 	@RequestMapping(value = "/login/wechat", method = RequestMethod.POST)
-	public Result<String> wechatLogin(OpenIdLoginParamDto openIdLoginParamDto, HttpServletRequest request,
-			HttpServletResponse response) {
-		String sessionId = "";
+	public Result<String> wechatLogin(OpenIdLoginParamDto openIdLoginParamDto,
+			HttpServletRequest request, HttpServletResponse response) {
+		String sessionId = loginService.openIdLogin(openIdLoginParamDto,
+				request, response);
 		return Result.buildSuccessResult("", sessionId);
 	}
 
@@ -63,7 +51,8 @@ public class LoginApiImpl implements LoginApi {
 	@Override
 	@NotAuthenRequired
 	public Result<String> loginPasswordFree(
-			@RequestBody @Valid LoginUserPasswordFreeParamDto loginUserPasswordFreeParamDto, Errors errors) {
+			@RequestBody @Valid LoginUserPasswordFreeParamDto loginUserPasswordFreeParamDto,
+			Errors errors) {
 		if (errors.hasErrors()) {
 			throw new ParamException(errors);
 		}

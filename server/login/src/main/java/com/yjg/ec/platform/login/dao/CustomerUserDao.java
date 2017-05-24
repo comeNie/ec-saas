@@ -1,6 +1,6 @@
 package com.yjg.ec.platform.login.dao;
 
-import com.yjg.ec.platform.auth.dto.LoginUser;
+import com.yjg.ec.platform.auth.result.dto.LoginResultUser;
 import com.yjg.ec.platform.customer.param.dto.CustomerUserParamDto;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -15,7 +15,7 @@ public interface CustomerUserDao {
 
 	public long addCustomer(CustomerUserParamDto customerUserParamDto);
 
-	public LoginUser getCustomerLogin(String patientName);
+	public LoginResultUser getCustomerLogin(String patientName);
 
-	public LoginUser getCustomerLoginByWechatOpenId(String openId);
+	public LoginResultUser getCustomerLoginByWechatOpenId(String openId);
 }
