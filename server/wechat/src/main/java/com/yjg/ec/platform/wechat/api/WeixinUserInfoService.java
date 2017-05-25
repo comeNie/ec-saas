@@ -1,4 +1,4 @@
-package com.yjg.ec.platform.wechet.api;
+package com.yjg.ec.platform.wechat.api;
 
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;

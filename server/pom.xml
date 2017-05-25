@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>com.yjg.ec.platform</groupId>
@@ -14,7 +15,7 @@
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>1.5.2.RELEASE</version>
 		<!-- lookup parent from repository -->
-		<relativePath/>
+		<relativePath />
 	</parent>
 
 	<modules>
@@ -25,14 +26,14 @@
 		<module>erp-web</module>
 		<module>sku-price</module>
 		<module>erp-service</module>
-    <module>erp_integration</module>
-    <module>shopcart</module>
-    <module>auth</module>
-    <module>login</module>
-    <module>security</module>
-    <module>wechet-function</module>
-    <module>cache</module>
-  </modules>
+		<module>erp_integration</module>
+		<module>shopcart</module>
+		<module>auth</module>
+		<module>login</module>
+		<module>security</module>
+		<module>wechat</module>
+		<module>cache</module>
+	</modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

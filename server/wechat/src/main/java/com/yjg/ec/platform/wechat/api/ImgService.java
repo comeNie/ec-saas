@@ -1,4 +1,4 @@
-package com.yjg.ec.platform.wechet.api;
+package com.yjg.ec.platform.wechat.api;
 
 import javax.annotation.Resource;
 
@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.alibaba.fastjson.JSONObject;
 import com.yjg.ec.platform.common.Result;
-import com.yjg.ec.platform.wechet.util.WeixinHttpUtil;
+import com.yjg.ec.platform.wechat.util.WeixinHttpUtil;
 import com.yjg.ec.platform.weixin.api.WeixinImgApi;
 
 @RestController

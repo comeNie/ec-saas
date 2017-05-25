@@ -1,4 +1,4 @@
-package com.yjg.ec.platform.wechet.util;
+package com.yjg.ec.platform.wechat.util;
 
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;

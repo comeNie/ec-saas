@@ -1,4 +1,4 @@
-package com.yjg.ec.platform.wechet.util;
+package com.yjg.ec.platform.wechat.util;
 
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;

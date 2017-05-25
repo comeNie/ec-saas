@@ -1,4 +1,4 @@
-package com.yjg.ec.platform.wechet.api;
+package com.yjg.ec.platform.wechat.api;
 
 import java.util.Date;
 import java.util.TreeMap;
